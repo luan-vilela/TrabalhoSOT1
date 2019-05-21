@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# VsCode e executável
+.vscode/
+Trabalho-T1-SO
