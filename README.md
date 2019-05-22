@@ -4,14 +4,14 @@
  - Para compilar rode.
 
 	    terminal:
-	    gcc Trabalho-T1-SO.c memscheduler.c -o Trabalho-T1-SO
+	    gcc Trabalho-T1-SO.c memscheduler.c -o main -lpthread
  
  - Executar
  
 		 terminal:
-		./Trabalho-T1-SO
+		./main
 
  - Executar com entrar do .txt
 
 		 terminal:
-		./Trabalho-T1-SO < entradas.txt 
+		./main < entradas.txt 
