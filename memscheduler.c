@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "memscheduler.h"
 
 /**
@@ -20,6 +21,7 @@ void _createProcess(int n, process **node){
         printf("%d %d %d %d\n", id, tp, tc, tb);
 
     }
+    
 }
 
 void _createNode(int id, int tp, int tc, int tb, process **node){
@@ -32,7 +34,7 @@ void _createNode(int id, int tp, int tc, int tb, process **node){
     newProcess->tb = tb;
     newProcess->next = NULL;
     newProcess->previous = NULL;
-    
+
 
     if(*node == NULL){
         *node = newProcess;        
@@ -64,16 +66,6 @@ void _createNode(int id, int tp, int tc, int tb, process **node){
             aux->previous = newProcess;
         }
 
-
-
-                    
-        
-
-
-
-
-
     }
-
 
 }
