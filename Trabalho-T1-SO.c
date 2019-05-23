@@ -8,6 +8,10 @@
 #include <unistd.h>
 
 
+/************************************************
+ * Variáveis globais
+************************************************/
+
 
 /* Quando um processo é criado ele chama uma função
 Quando a função acaba ele é excluído da memória
@@ -29,23 +33,46 @@ int main(){
     // tq = time quantum
     int tmp, n, tq;
     int i;
-    process *fcfs = NULL;
-    
+    process *fila_entrada = NULL;
+    process *hardDisk = NULL;
+    process *fila_prontos = NULL;
+    arguments *args;
+    pthread_t *criador_de_processos;
     pthread_t *p;
 
-    scanf("%d", &n);
-    _createProcess(n, &fcfs);
+    // ***********************************************
+    //cria argumentos para enviar pelas threads
+    args = (arguments *) malloc(sizeof(arguments));
+    args->fila = &fila_entrada;
     
+    // Recebe números de processos
+    scanf("%d", &args->n);
+
+    /**
+     * CRIA THREAD CRIADOR DE PROCESSOS
+    */
+    criador_de_processos = (pthread_t *) malloc(sizeof(* criador_de_processos));
+    pthread_create(criador_de_processos, NULL, (void *) _createProcess, (void *) args);
+    pthread_join(*criador_de_processos, NULL);
+
+
+    // puxa um processo da fila de entrada e coloca na fila de prontos
+    _fcfs(&fila_entrada, &fila_prontos);
+
+
     printf("----------- SAIDA ------------\n");
     printf("---- ORDENADOS POR tc  < -----\n");
-    while (fcfs){
+    int contador = 0;
+    while (fila_entrada){
 
         p = (pthread_t *) malloc(sizeof(* p));
-        pthread_create(p, NULL, (void *) criadoProcesso, fcfs);
+        pthread_create(p, NULL, (void *) criadoProcesso, fila_entrada);
         pthread_join(*p, NULL);
-        fcfs = fcfs->next;
+        fila_entrada = fila_entrada->next;
+        contador++;
     }
 
+    printf("--------- %d PROCESSOS  ---------\n", contador);
     return 0;
 }
 
