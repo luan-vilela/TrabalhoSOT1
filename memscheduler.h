@@ -18,15 +18,32 @@ typedef struct arg_struct {
     process **fila;
 }arguments;
 
+//Registrador de memória
+typedef struct reg{
+    int id;
+    struct reg *next;
+}memoryRecorder;
+
+// Memória primária do sistema
+struct memory{
+    int tmp;
+    memoryRecorder *idProcess;
+};
+
+struct memory tmp;
+
+
 /****************************************************************
  *   AQUI FICA O CABEÇALHO DE TODOS OS MÉTODOS
  ****************************************************************/
 void *_createProcess(void *node);
 void createNode(int id, int tp, int tc, int tb, process **node);
 void _fcfs(process **filaEntrada, process **filaPronto);
-process *alloca_node();
-process * getProcess(process **fila);
 void _removeProcess(int id, process **fila);
+int _swapper(process *node);
+process * alloca_node();
+process * getProcess(process **fila);
+int getMemory();
 
 /****************************************************************
  *   MÉTODOS QUE PRECISÃO SER IMPLEMENTADOS
@@ -42,7 +59,7 @@ void _removeProcess(int id, process **fila);
 void _timered();
 void _rr();
 void _despachante();
-void _swapper();
+
 
 // talvez faça um outra thread para ficar falando o que acontece
 void _printer();

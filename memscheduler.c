@@ -3,6 +3,15 @@
 #include <pthread.h>
 #include "memscheduler.h"
 
+// aloca um processo e devolve ele
+process * alloca_node(){
+    process *newProcess;
+    newProcess = (process *)malloc(sizeof(process));
+    newProcess->previous = NULL;
+    newProcess->next = NULL;
+    return newProcess;
+}
+
 /**
  * Cria processos dinamicamente na memória
  * Devolve um struct do tipo process ordenado
@@ -48,29 +57,40 @@ void createNode(int id, int tp, int tc, int tb, process **node){
 }
 
 void _fcfs(process **filaEntrada, process **filaPronto){
-    printf("ok");
     process *newProcess;
-
     // Testa se fila tem processos
     if(*filaEntrada != NULL){
-        printf("ok");
         newProcess = alloca_node();
 
         //pega o menor processo
         newProcess = getProcess(filaEntrada);
         
+        // Se tiver espaço na memória aloca processo na fila de prontos
+        if(_swapper(newProcess)){
+            // remove o processo da fila entrada
+            _removeProcess(newProcess->id, filaEntrada);
 
-        if (*filaPronto == NULL){
-            *filaPronto = newProcess;
+            // aloca no início
+            if (*filaPronto == NULL){
+                newProcess->next =NULL;
+                newProcess->previous = NULL;
+                *filaPronto = newProcess;
+
+            }
+            // aloca no final
+            else{
+                (*filaPronto)->previous = newProcess;
+                newProcess->next = *filaPronto;
+                *filaPronto = newProcess;
+            }
+            
+            
+            
         }
         else{
-
+            printf("\n\n*** Não tem memória para alocação do processo. ***\n");
+            printf(" ** Chamar swapper **.\n\n");
         }
-
-        printf("id: %d - tc: %d", newProcess->id, newProcess->tc );
-
-        // remove processo da fila entrada
-        _removeProcess(newProcess->id, filaEntrada);
     }
 
 
@@ -108,8 +128,8 @@ void _fcfs(process **filaEntrada, process **filaPronto){
 //Pega o processo de menor tc da fila
 process * getProcess(process **fila){
     process *newProcess, *aux;
-    newProcess = alloca_node();
-    aux = alloca_node();
+    // newProcess = alloca_node();
+    // aux = alloca_node();
 
     aux = *fila;
     newProcess = aux;
@@ -117,19 +137,9 @@ process * getProcess(process **fila){
     while(aux->next != NULL){
         if(newProcess->tc > aux->tc)
             newProcess = aux;
-
         aux = aux->next;
     }
-    free(aux);
-    return newProcess;
-}
 
-// aloca um processo e devolve ele
-process *alloca_node(){
-    process *newProcess;
-    newProcess = (process *)malloc(sizeof(process));
-    newProcess->previous = NULL;
-    newProcess->next = NULL;
     return newProcess;
 }
 
@@ -143,19 +153,75 @@ void _removeProcess(int id, process **fila){
         while (id != aux->id && aux != NULL){
             aux = aux->next;
         }
-
-        aux->previous->next = aux->next;
-        aux->next->previous = aux->previous;
-        free(aux);
-        fila = begin;
+    
+        // testa se é o ultimo processo na fila
+        if(aux->next != NULL){
+            aux->previous->next = aux->next;
+            aux->next->previous = aux->previous;
+            fila = begin;
+        }
+        else{
+            *fila = NULL;
+        }
+        //free(aux);
+        
 
     }
     else{
         printf("Não existe processo para ser removido!\n");
     }
 
+}
+
+/**
+ * Adiciona processo na memória
+ * Recebe um (int)tmp = quantidade de memória
+ * Recebe 1 processo;
+ * 
+*/
+void upMemory(int tp, int id){
+    memoryRecorder *newRegister;
+    newRegister = (memoryRecorder *) malloc(sizeof(newRegister));
+    tmp.tmp -= tp;
+    newRegister->id = id;
+
+    if(tmp.idProcess == NULL){
+        newRegister->next = NULL;
+        tmp.idProcess = newRegister;
+    }
+    else{
+        newRegister->next = tmp.idProcess;
+        tmp.idProcess = newRegister;
+    }
+
+}
+
+void downMemory(int tmp, process node){
+
+}
 
 
+// * Retorna quantidade de memória disponível no sistema
+int getMemory(){
+    return tmp.tmp;
+}
 
+/**
+ * Verifica se existe espaço na memória e coloca o
+ * processo nela.
+ * Retorna 1 para processos alocados
+ * Retorna 0 para processos não alocados
+*/
+int _swapper(process *node){
     
+    //verica se cabe na memória
+    if(node->tp <= tmp.tmp){
+        upMemory(node->tp, node->id);
+        return 1;
+    }
+    else{
+
+    }
+    return 0;
+
 }

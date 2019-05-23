@@ -9,29 +9,50 @@
 
 
 /************************************************
- * Variáveis globais
+ * DEBUG
+************************************************/
+void imprimeFila(process *L, char mensagem[120]){
+
+    printf("%s\n", mensagem);
+    while(L!= NULL){
+        printf("processo id: %d criado. Detalhes: \t id | \t tp | \t tc | \t tb\n ", L->id);
+        printf("\t\t\t\t\t %d \t %d \t %d \t %d\n", L->id, L->tp, L->tc, L->tb);
+        //Aguarda 1 segundo
+        //sleep(1);
+        L = L->next;
+    }
+}
+void imprimeMemoria(char mensagem[120]){
+    printf("%s\n", mensagem);
+    printf("-------------------------------------------------\n");
+    printf("###    Quantidade de memória principal: %d    ###\n", tmp.tmp);
+    printf("-------------------------------------------------\n");
+    printf("--------   ID'S ALOCADOS NA MEMÓRIA   -----------\n");
+    if(tmp.idProcess != NULL)
+        do{
+            printf(" %d  ", tmp.idProcess->id);
+            tmp.idProcess = tmp.idProcess->next;
+        }
+        while (tmp.idProcess != NULL);
+    printf("\n-------------------------------------------------\n");
+    
+    //Aguarda 1 segundo
+    //sleep(1);
+}
+
+/************************************************
+ * FIM DEBUG
 ************************************************/
 
-
-/* Quando um processo é criado ele chama uma função
-Quando a função acaba ele é excluído da memória
-Com isso cada STRUCT está em um processo
-Como a struct está em um fila FCFS conseguimos
-Alocar o desalocar a struct e finalizar o processo */
-void criadoProcesso(process *L){
-    printf("processo id: %d criado. Detalhes: \t id | \t tp | \t tc | \t tb\n ", L->id);
-    printf("\t\t\t\t\t %d \t %d \t %d \t %d\n\n", L->id, L->tp, L->tc, L->tb);
-
-    //Aguarda 1 segundo
-    sleep(1);
-}
 
 
 int main(){
     //tmp = tamanho da memória principal
     // n = números de processos 
     // tq = time quantum
-    int tmp, n, tq;
+    tmp.tmp = 0;
+    tmp.idProcess = NULL;
+    int n, tq;
     int i;
     process *fila_entrada = NULL;
     process *hardDisk = NULL;
@@ -45,8 +66,9 @@ int main(){
     args = (arguments *) malloc(sizeof(arguments));
     args->fila = &fila_entrada;
     
-    // Recebe números de processos
-    scanf("%d", &args->n);
+    // Entrada de dados
+    // Recebe tmp, n, tq
+    scanf("%d %d %d", &tmp.tmp, &args->n, &tq);
 
     /**
      * CRIA THREAD CRIADOR DE PROCESSOS
@@ -55,24 +77,22 @@ int main(){
     pthread_create(criador_de_processos, NULL, (void *) _createProcess, (void *) args);
     pthread_join(*criador_de_processos, NULL);
 
-
     // puxa um processo da fila de entrada e coloca na fila de prontos
-    _fcfs(&fila_entrada, &fila_prontos);
+    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
+    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
+    _fcfs(&fila_entrada, &fila_prontos);  // não tem memória para puxar mais um
 
 
-    printf("----------- SAIDA ------------\n");
-    printf("---- ORDENADOS POR tc  < -----\n");
-    int contador = 0;
-    while (fila_entrada){
 
-        p = (pthread_t *) malloc(sizeof(* p));
-        pthread_create(p, NULL, (void *) criadoProcesso, fila_entrada);
-        pthread_join(*p, NULL);
-        fila_entrada = fila_entrada->next;
-        contador++;
-    }
+    //debug
 
-    printf("--------- %d PROCESSOS  ---------\n", contador);
+    //imprime fila de entrada
+    imprimeFila(fila_entrada, "\n----------- SAIDA ------------\n---- FILA DE ENTRDA -----");
+
+    //imprime fila de prontos
+    imprimeFila(fila_prontos, "\n----------- SAIDA ------------\n---- FILA DE PRONTOS  < -----");
+
+    imprimeMemoria("\n----------- SAIDA ------------\n---- REGISTROS DA MEMÓRIA PRINCIPAL  < -----");
     return 0;
 }
 
