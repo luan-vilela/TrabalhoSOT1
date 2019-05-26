@@ -40,10 +40,11 @@ void *_createProcess(void *node);
 void createNode(int id, int tp, int tc, int tb, process **node);
 void _fcfs(process **filaEntrada, process **filaPronto);
 void _removeProcess(int id, process **fila);
-int _swapper(process *node);
 process * alloca_node();
 process * getProcess(process **fila);
 int getMemory();
+void upMemory(int tp, int id);
+int _swapper(process *node);
 
 /****************************************************************
  *   MÉTODOS QUE PRECISÃO SER IMPLEMENTADOS
@@ -59,7 +60,7 @@ int getMemory();
 void _timered();
 void _rr();
 void _despachante();
-
+void downMemory(int tmp, process node);
 
 // talvez faça um outra thread para ficar falando o que acontece
 void _printer();

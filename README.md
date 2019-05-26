@@ -4,7 +4,7 @@
  - Para compilar rode.
 
 	    terminal:
-	    gcc Trabalho-T1-SO.c memscheduler.c -o main -lpthread
+	    gcc *.c -o main -lpthread 
  
  - Executar
  
