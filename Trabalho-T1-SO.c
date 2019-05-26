@@ -59,7 +59,9 @@ int main(){
     process *fila_prontos = NULL;
     arguments *args;
     pthread_t *criador_de_processos;
+    pthread_t *Timer;
     pthread_t *p;
+
 
     // ***********************************************
     //cria argumentos para enviar pelas threads
@@ -76,6 +78,13 @@ int main(){
     criador_de_processos = (pthread_t *) malloc(sizeof(* criador_de_processos));
     pthread_create(criador_de_processos, NULL, (void *) _createProcess, (void *) args);
     pthread_join(*criador_de_processos, NULL);
+
+    /**
+     * CRIA THREAD Timer
+    */
+    Timer = (pthread_t *) malloc(sizeof(* Timer));
+    pthread_create(Timer, NULL, (void *) updateTime, NULL);
+    
 
     // puxa um processo da fila de entrada e coloca na fila de prontos
     _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
@@ -94,6 +103,9 @@ int main(){
 
     imprimeMemoria("\n----------- SAIDA ------------\n---- REGISTROS DA MEMÓRIA PRINCIPAL  < -----");
     return 0;
+
+    // NÃO PODE USAR JOIN NO THREAD TIMER
+    //pthread_join(*Timer, NULL);
 }
 
 

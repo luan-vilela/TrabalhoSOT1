@@ -16,6 +16,7 @@ typedef struct arg_struct {
     int tmp;
     int tb;
     process **fila;
+    process **prontos;
 }arguments;
 
 //Registrador de memória
@@ -31,7 +32,7 @@ struct memory{
 };
 
 struct memory tmp;
-
+int myTime;
 
 /****************************************************************
  *   AQUI FICA O CABEÇALHO DE TODOS OS MÉTODOS
@@ -45,6 +46,9 @@ process * getProcess(process **fila);
 int getMemory();
 void upMemory(int tp, int id);
 int _swapper(process *node);
+int getTime();
+void restartTime();
+void updateTime();
 
 /****************************************************************
  *   MÉTODOS QUE PRECISÃO SER IMPLEMENTADOS

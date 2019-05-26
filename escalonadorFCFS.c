@@ -18,6 +18,10 @@ void _fcfs(process **filaEntrada, process **filaPronto){
         //pega o menor processo
         newProcess = getProcess(filaEntrada);
         
+        // Verifica se o processo deve ser colocado
+        // na fila de prontos.
+        while(newProcess->tc >= getTime());
+
         // Se tiver espaço na memória aloca processo na fila de prontos
         if(_swapper(newProcess)){
             // remove o processo da fila entrada
