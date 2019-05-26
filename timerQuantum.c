@@ -27,3 +27,8 @@ int getTime(){
 void restartTime(){
     myTime = 0;
 }
+
+// espera 1 segundo
+void espera(){
+    sleep(1);
+}

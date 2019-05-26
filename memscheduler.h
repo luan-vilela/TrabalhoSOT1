@@ -15,6 +15,7 @@ typedef struct arg_struct {
     int n;
     int tmp;
     int tb;
+    int tq;
     process **fila;
     process **prontos;
 }arguments;
@@ -40,6 +41,7 @@ int myTime;
 void *_createProcess(void *node);
 void createNode(int id, int tp, int tc, int tb, process **node);
 void _fcfs(process **filaEntrada, process **filaPronto);
+void _RR(process **filaPronto);
 void _removeProcess(int id, process **fila);
 process * alloca_node();
 process * getProcess(process **fila);
@@ -49,6 +51,7 @@ int _swapper(process *node);
 int getTime();
 void restartTime();
 void updateTime();
+void espera();
 
 /****************************************************************
  *   MÉTODOS QUE PRECISÃO SER IMPLEMENTADOS
@@ -62,7 +65,6 @@ void updateTime();
  ****************************************************************/
 
 void _timered();
-void _rr();
 void _despachante();
 void downMemory(int tmp, process node);
 

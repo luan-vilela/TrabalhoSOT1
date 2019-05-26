@@ -52,7 +52,6 @@ int main(){
     // tq = time quantum
     tmp.tmp = 0;
     tmp.idProcess = NULL;
-    int n, tq;
     int i;
     process *fila_entrada = NULL;
     process *hardDisk = NULL;
@@ -70,7 +69,7 @@ int main(){
     
     // Entrada de dados
     // Recebe tmp, n, tq
-    scanf("%d %d %d", &tmp.tmp, &args->n, &tq);
+    scanf("%d %d %d", &tmp.tmp, &args->n, &args->tq);
 
     /**
      * CRIA THREAD CRIADOR DE PROCESSOS
@@ -88,6 +87,7 @@ int main(){
 
     // puxa um processo da fila de entrada e coloca na fila de prontos
     _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
+    _RR(&fila_prontos);
     _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
     _fcfs(&fila_entrada, &fila_prontos);  // não tem memória para puxar mais um
 

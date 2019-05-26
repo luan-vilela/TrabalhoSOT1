@@ -34,7 +34,7 @@ void _fcfs(process **filaEntrada, process **filaPronto){
                 *filaPronto = newProcess;
 
             }
-            // aloca no final
+            // aloca no início
             else{
                 (*filaPronto)->previous = newProcess;
                 newProcess->next = *filaPronto;
