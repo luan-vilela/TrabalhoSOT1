@@ -16,22 +16,33 @@ void _RR(process **filaPronto){
     int tq = 2;
     int auxTimer = getTime();
     while(*filaPronto != NULL && getTime()-auxTimer < tq){
+        
 
         //pega o menor processo
         newProcess = getProcess(filaPronto);
 
-        do{
-            sleep(1);
-            newProcess->tb -=1;
+        while(getTime()-auxTimer < tq && newProcess->tb > 0){ 
+            newProcess->tb -= 1;
+            newProcess->tc += 1;
+            espera();
             
-        }while(getTime()-auxTimer < tq && newProcess->tb > 1);
-        
-        printf("O processo id %d ficou %ds no Round-Robin. \n", newProcess->id, getTime()-auxTimer);
-
-        // restarta auxiliar se não existir mais processos
-        if((*filaPronto)->next == NULL && newProcess->tb > 0){
-            auxTimer = getTime();
         }
-
+        
+        printf("O processo id %d ficou %ds no Round-Robin com tb: %d\n", newProcess->id, getTime()-auxTimer, newProcess->tb);
+        
+        if(newProcess->tb <= 0){
+            _removeProcess(newProcess->id, filaPronto);
+            // Desconecta dos irmãos
+            newProcess = disconnectBrothers(newProcess);
+        }
+        // restarta auxiliar se não existir mais processos
+        if((*filaPronto) == NULL){
+            free(newProcess);
+            break;
+        }
+        else{
+            auxTimer = getTime();
+           
+        }
     }
 }

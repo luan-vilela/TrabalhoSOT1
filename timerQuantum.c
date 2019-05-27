@@ -13,8 +13,9 @@ void updateTime(){
 
     restartTime();
     while (1){
-        myTime++;
         sleep(1);
+        myTime++;
+
     }
 }
 

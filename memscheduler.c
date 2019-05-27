@@ -21,12 +21,18 @@ process * getProcess(process **fila){
     newProcess = aux;
     // Percorre a fila
     while(aux->next != NULL){
-        if(newProcess->tc > aux->tc)
-            newProcess = aux;
+        if(newProcess->tc > aux->next->tc)
+            newProcess = aux->next;
         aux = aux->next;
     }
 
     return newProcess;
+}
+
+void * disconnectBrothers(process *node){
+    node->next = NULL;
+    node->previous = NULL;
+    return node;
 }
 
 void _removeProcess(int id, process **fila){
@@ -41,16 +47,26 @@ void _removeProcess(int id, process **fila){
         }
     
         // testa se é o ultimo processo na fila
-        if(aux->next != NULL){
-            aux->previous->next = aux->next;
-            aux->next->previous = aux->previous;
-            fila = begin;
-        }
-        else{
+        if(aux->previous == NULL && aux->next == NULL){
             *fila = NULL;
         }
-        //free(aux);
-        
+        // testa se é o início da fila
+        else if(aux->previous == NULL){
+            aux->next->previous = NULL;
+            *fila = aux->next;
+
+        }
+        // testa se é o final da fila
+        else if(aux->next == NULL){
+            aux->previous->next = NULL;
+            fila = begin;
+        }
+        // testa se é meio da fila
+        else{
+            aux->previous->next = aux->next;
+            aux->next->previous = aux->previous;
+            fila = begin;            
+        }
 
     }
     else{

@@ -45,6 +45,7 @@ void _RR(process **filaPronto);
 void _removeProcess(int id, process **fila);
 process * alloca_node();
 process * getProcess(process **fila);
+void * disconnectBrothers(process *node);
 int getMemory();
 void upMemory(int tp, int id);
 int _swapper(process *node);

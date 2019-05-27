@@ -7,6 +7,6 @@
 #include <stdlib.h>
 #include "memscheduler.h"
 
-/**
- * NADA AINDA
-*/
+void _despachante(process** fila){
+
+}
