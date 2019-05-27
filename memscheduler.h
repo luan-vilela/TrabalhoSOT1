@@ -68,6 +68,9 @@ void espera();
 
 void _timered();
 void _despachante();
+void upMemoryDisk();
+int donwMemoryDisk();
+
 
 
 // talvez faça um outra thread para ficar falando o que acontece

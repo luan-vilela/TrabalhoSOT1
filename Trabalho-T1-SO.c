@@ -47,15 +47,16 @@ void imprimeMemoria(char mensagem[120]){
 
 
 int main(){
-    //tmp = tamanho da memória principal
-    // n = números de processos 
-    // tq = time quantum
+
+    // tmp é um struct que contém quantidade de memória e os ids mapeados
     tmp.tmp = 0;
     tmp.idProcess = NULL;
     int i;
+    // filas
     process *fila_entrada = NULL;
-    process *hardDisk = NULL;
     process *fila_prontos = NULL;
+    // hd apenas ids
+    memoryRecorder *hardDisk = NULL;
     arguments *args;
     pthread_t *criador_de_processos;
     pthread_t *Timer;
