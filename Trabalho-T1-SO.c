@@ -90,8 +90,13 @@ int main(){
     _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
     _RR(&fila_prontos);
 
-    _fcfs(&fila_entrada, &fila_prontos);  // não tem memória para puxar mais um
+    // puxa um processo da fila de entrada e coloca na fila de prontos
+    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
+    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
+    _RR(&fila_prontos);
 
+    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
+    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
 
 
     //debug

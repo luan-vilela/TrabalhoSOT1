@@ -48,6 +48,7 @@ process * getProcess(process **fila);
 void * disconnectBrothers(process *node);
 int getMemory();
 void upMemory(int tp, int id);
+int downMemory(int tp, int id);
 int _swapper(process *node);
 int getTime();
 void restartTime();
@@ -67,7 +68,7 @@ void espera();
 
 void _timered();
 void _despachante();
-void downMemory(int tmp, process node);
+
 
 // talvez faça um outra thread para ficar falando o que acontece
 void _printer();

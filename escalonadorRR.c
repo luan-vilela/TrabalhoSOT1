@@ -27,13 +27,14 @@ void _RR(process **filaPronto){
             espera();
             
         }
-        
+
         printf("O processo id %d ficou %ds no Round-Robin com tb: %d\n", newProcess->id, getTime()-auxTimer, newProcess->tb);
-        
+        //void downMemory(int tp, int id);
         if(newProcess->tb <= 0){
             _removeProcess(newProcess->id, filaPronto);
             // Desconecta dos irmãos
             newProcess = disconnectBrothers(newProcess);
+            downMemory(newProcess->tp, newProcess->id);
         }
         // restarta auxiliar se não existir mais processos
         if((*filaPronto) == NULL){

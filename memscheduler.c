@@ -11,7 +11,8 @@ process * alloca_node(){
     return newProcess;
 }
 
-//Pega o processo de menor tc da fila
+// Pega o processo de menor tc da fila
+// e retorna ele.
 process * getProcess(process **fila){
     process *newProcess, *aux;
     // newProcess = alloca_node();
@@ -29,12 +30,15 @@ process * getProcess(process **fila){
     return newProcess;
 }
 
+// Desconecta irmãos do processo
 void * disconnectBrothers(process *node){
     node->next = NULL;
     node->previous = NULL;
     return node;
 }
 
+// Remove 1 processo da fila.
+// Não da free
 void _removeProcess(int id, process **fila){
     process *aux, **begin;
     
@@ -97,13 +101,52 @@ void upMemory(int tp, int id){
     }
 
 }
+
 /**
  * Remove 1 processo na memória
  * Recebe um (int)tmp = quantidade de memória
  * Recebe 1 processo;
+ * Retorna 1 se conseguiu tirar o processo da memória
+ * Retorna -1 se não conseguiu tirar da memória
  * 
 */
-void downMemory(int tmp, process node){
+int downMemory(int tp, int id){
+    memoryRecorder *ant, *prox, *begin;
+    prox = (memoryRecorder *) malloc(sizeof(prox));
+    
+    ant = NULL;
+    prox = tmp.idProcess;
+    begin = tmp.idProcess;
+    
+    if(prox != NULL){
+        while(prox->id != id && prox->next != NULL){
+            ant = prox;
+            prox = prox->next;
+        }
+
+        if(ant == NULL){
+            if(prox->next != NULL){
+                tmp.idProcess = prox->next;
+            }
+            else{
+                tmp.idProcess = NULL;
+            }
+
+        }
+        else{
+            ant->next = prox->next;
+            tmp.idProcess = begin;
+        }
+        prox->id = 999999;
+        prox = NULL;
+        tmp.tmp += tp;
+        free(prox);
+        return 1;
+    }
+    else{
+        return -1;
+        //printf("Não existe programa mapeado na memória!\n");
+    }
 
 }
 
