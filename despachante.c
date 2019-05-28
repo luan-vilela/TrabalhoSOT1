@@ -7,6 +7,12 @@
 #include <stdlib.h>
 #include "memscheduler.h"
 
-void _despachante(process** fila){
+void _despachante(process* fila){
 
+    if(findProcess(fila->id, 1)){
+        //reiniciar timer
+    }
+    else{
+        //
+    }
 }

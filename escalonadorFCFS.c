@@ -9,10 +9,14 @@
 #include "memscheduler.h"
 
 
-void _fcfs(process **filaEntrada, process **filaPronto){
+void * _fcfs(void *node){
+    process **filaEntrada, **filaPronto;
+    filaEntrada = ((arguments*)node)->filaEntrada;
+    filaPronto = ((arguments*)node)->filaProntos;
     process *newProcess;
+    
     // Testa se fila tem processos
-    if(*filaEntrada != NULL){
+    while(*filaEntrada != NULL){
         newProcess = alloca_node();
 
         //pega o menor processo
@@ -25,10 +29,10 @@ void _fcfs(process **filaEntrada, process **filaPronto){
 
 
         // Se tiver espaço na memória aloca processo na fila de prontos
-        if(_swapper(newProcess)){
+        if(_swapper(newProcess, 1)){
             // remove o processo da fila entrada
             _removeProcess(newProcess->id, filaEntrada);
-
+            printf("retirou:  %d da fila\n", newProcess->id);
             // Desconecta dos irmãos
             newProcess = disconnectBrothers(newProcess);
             
@@ -41,45 +45,12 @@ void _fcfs(process **filaEntrada, process **filaPronto){
                 (*filaPronto)->previous = newProcess;
                 newProcess->next = *filaPronto;
                 *filaPronto = newProcess;
-            }
-
-
-            
-            
-            
+            }    
         }
         else{
-            printf("\n\n*** Não tem memória para alocação do processo. ***\n");
-            printf(" ** Chamar swapper **.\n\n");
-        }
-    }
-    
-    // ordena do menor tc para o maior
-    // else{
-    //     aux = *node;
-    //     begin = node;
-    //     while(aux->next != NULL && tc > aux->tc){
-    //         aux = aux->next;
-    //     }
-    //     //fim 
-    //     if(tc >= aux->tc){
-    //         aux->next = newProcess;
-    //         newProcess->previous = aux;
-    //         node = begin;
-    //     }
-    //     // início
-    //     else if(tc < (*node)->tc ){
-    //         (*node)->previous = newProcess;
-    //         newProcess->next = (*node);
-    //         *node = newProcess;
-    //     }
-    //     // meio
-    //     else{
-    //         newProcess->next = aux;
-    //         newProcess->previous = aux->previous;
-    //         aux->previous->next = newProcess;
-    //         aux->previous = newProcess;
-    //     }
+            printf("\n*** Não tem memória suficiente para alocação do processo. ***\n");
 
-    // }
+        }
+        
+    }
 }

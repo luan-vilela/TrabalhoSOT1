@@ -20,6 +20,8 @@ void _RR(process **filaPronto){
 
         //pega o menor processo
         newProcess = getProcess(filaPronto);
+        
+        //_despachante
 
         while(getTime()-auxTimer < tq && newProcess->tb > 0){ 
             newProcess->tb -= 1;
@@ -34,7 +36,7 @@ void _RR(process **filaPronto){
             _removeProcess(newProcess->id, filaPronto);
             // Desconecta dos irmãos
             newProcess = disconnectBrothers(newProcess);
-            downMemory(newProcess->tp, newProcess->id);
+            downMemory(newProcess->id);
         }
         // restarta auxiliar se não existir mais processos
         if((*filaPronto) == NULL){

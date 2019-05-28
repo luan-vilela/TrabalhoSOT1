@@ -22,18 +22,18 @@ void imprimeFila(process *L, char mensagem[120]){
         L = L->next;
     }
 }
-void imprimeMemoria(char mensagem[120]){
+void imprimeMemoria(memoryRecorder *L, char mensagem[120]){
     printf("%s\n", mensagem);
     printf("-------------------------------------------------\n");
     printf("###    Quantidade de memória principal: %d    ###\n", tmp.tmp);
     printf("-------------------------------------------------\n");
     printf("--------   ID'S ALOCADOS NA MEMÓRIA   -----------\n");
-    if(tmp.idProcess != NULL)
+    if(L != NULL)
         do{
-            printf(" %d  ", tmp.idProcess->id);
-            tmp.idProcess = tmp.idProcess->next;
+            printf(" %d  ", L->id);
+            L = L->next;
         }
-        while (tmp.idProcess != NULL);
+        while (L != NULL);
     printf("\n-------------------------------------------------\n");
     
     //Aguarda 1 segundo
@@ -51,14 +51,16 @@ int main(){
     // tmp é um struct que contém quantidade de memória e os ids mapeados
     tmp.tmp = 0;
     tmp.idProcess = NULL;
+    hardDisk = NULL;
     int i;
     // filas
     process *fila_entrada = NULL;
     process *fila_prontos = NULL;
     // hd apenas ids
-    memoryRecorder *hardDisk = NULL;
+    
     arguments *args;
     pthread_t *criador_de_processos;
+    pthread_t *escalonador_FCFS;
     pthread_t *Timer;
     pthread_t *p;
 
@@ -66,7 +68,8 @@ int main(){
     // ***********************************************
     //cria argumentos para enviar pelas threads
     args = (arguments *) malloc(sizeof(arguments));
-    args->fila = &fila_entrada;
+    args->filaEntrada = &fila_entrada;
+    args->filaProntos = &fila_prontos; 
     
     // Entrada de dados
     // Recebe tmp, n, tq
@@ -86,21 +89,19 @@ int main(){
     pthread_create(Timer, NULL, (void *) updateTime, NULL);
     
 
-    // puxa um processo da fila de entrada e coloca na fila de prontos
-    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
-    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
-    _RR(&fila_prontos);
+    /**
+     * CRIA THREAD FCFS
+    */
+    escalonador_FCFS = (pthread_t *) malloc(sizeof(* escalonador_FCFS));
+    pthread_create(escalonador_FCFS, NULL, (void *) _fcfs, (void *) args);
+    pthread_join(*escalonador_FCFS, NULL);
+ 
 
-    // puxa um processo da fila de entrada e coloca na fila de prontos
-    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
-    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
-    _RR(&fila_prontos);
 
-    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
-    _fcfs(&fila_entrada, &fila_prontos);  //puxa 1 processo e coloca na fila de pronto
 
 
     //debug
+    
 
     //imprime fila de entrada
     imprimeFila(fila_entrada, "\n----------- SAIDA ------------\n---- FILA DE ENTRDA -----");
@@ -108,7 +109,11 @@ int main(){
     //imprime fila de prontos
     imprimeFila(fila_prontos, "\n----------- SAIDA ------------\n---- FILA DE PRONTOS  < -----");
 
-    imprimeMemoria("\n----------- SAIDA ------------\n---- REGISTROS DA MEMÓRIA PRINCIPAL  < -----");
+    //imprime disco
+    imprimeMemoria(hardDisk, "\n----------- SAIDA ------------\n---- REGISTROS DA DISCO RÍGIDO  < -----");
+    
+    //imprime memória principal
+    imprimeMemoria(tmp.idProcess, "\n----------- SAIDA ------------\n---- REGISTROS DA MEMÓRIA PRINCIPAL  < -----");
     return 0;
 
     // NÃO PODE USAR JOIN NO THREAD TIMER

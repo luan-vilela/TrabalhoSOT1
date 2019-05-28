@@ -23,7 +23,7 @@ void *_createProcess(void *node){
     printf("--------- %d PROCESSOS  ---------\n", ((arguments*)node)->n);
     for(i = 0; i < ((arguments*)node)->n; i++){
         scanf("%d %d %d %d", &id, &tp, &tc, &tb);
-        createNode(id,tp,tc,tb,((arguments*)node)->fila);
+        createNode(id,tp,tc,tb,((arguments*)node)->filaEntrada);
         printf("%d %d %d %d\n", id, tp, tc, tb);
 
     }

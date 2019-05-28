@@ -16,13 +16,14 @@ typedef struct arg_struct {
     int tmp;
     int tb;
     int tq;
-    process **fila;
-    process **prontos;
+    process **filaEntrada;
+    process **filaProntos;
 }arguments;
 
 //Registrador de memória
 typedef struct reg{
     int id;
+    int tp;
     struct reg *next;
 }memoryRecorder;
 
@@ -32,6 +33,7 @@ struct memory{
     memoryRecorder *idProcess;
 };
 
+memoryRecorder *hardDisk;
 struct memory tmp;
 int myTime;
 
@@ -39,8 +41,8 @@ int myTime;
  *   AQUI FICA O CABEÇALHO DE TODOS OS MÉTODOS
  ****************************************************************/
 void *_createProcess(void *node);
+void * _fcfs(void *node);
 void createNode(int id, int tp, int tc, int tb, process **node);
-void _fcfs(process **filaEntrada, process **filaPronto);
 void _RR(process **filaPronto);
 void _removeProcess(int id, process **fila);
 process * alloca_node();
@@ -48,12 +50,17 @@ process * getProcess(process **fila);
 void * disconnectBrothers(process *node);
 int getMemory();
 void upMemory(int tp, int id);
-int downMemory(int tp, int id);
-int _swapper(process *node);
+int downMemory(int id);
+int _swapper(process *node, int local);
 int getTime();
 void restartTime();
 void updateTime();
 void espera();
+int downMemoryDisk(int id);
+void upMemoryDisk(int tp, int id);
+int swapon(int local);
+int findProcess(int id, int local);
+process * getProcessToRR(process **fila);
 
 /****************************************************************
  *   MÉTODOS QUE PRECISÃO SER IMPLEMENTADOS
@@ -68,7 +75,6 @@ void espera();
 
 void _timered();
 void _despachante();
-void upMemoryDisk();
 int donwMemoryDisk();
 
 
