@@ -1,0 +1,19 @@
+/**
+ * # Membros do grupo:
+ *      - LUAN VILELA LOPES
+ *      - GIOVANNI PRATTO
+ *      - ARTHUR LEAL
+ * 
+ *  # Todos o trabalho está em arquivo separado.
+ *      - memscheduler.h é o cabeçalho e contém variáveis globais
+ *      - Trabalho-T1-SO.c contém o arquivo main()
+ *      - O restante são arquivos de métodos usados pela main
+ * 
+ * 
+ *  # Para compilar entrar na pasta do trabalho e rodar
+ *      - gcc *.c -o main -lpthread
+ *  
+ * 
+ *  # Para executar.
+ *      - ./main
+*/

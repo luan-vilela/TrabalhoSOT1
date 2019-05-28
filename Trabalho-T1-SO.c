@@ -1,5 +1,22 @@
-//https://www.youtube.com/watch?v=8EckoXGfEV4
-
+/**
+ * # Membros do grupo:
+ *      - LUAN VILELA LOPES
+ *      - GIOVANNI PRATTO
+ *      - ARTHUR LEAL
+ * 
+ *  # Todos o trabalho está em arquivo separado.
+ *      - memscheduler.h é o cabeçalho e contém variáveis globais
+ *      - Trabalho-T1-SO.c contém o arquivo main()
+ *      - O restante são arquivos de métodos usados pela main
+ * 
+ * 
+ *  # Para compilar entrar na pasta do trabalho e rodar
+ *      - gcc *.c -o main -lpthread
+ *  
+ * 
+ *  # Para executar.
+ *      - ./main
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -39,11 +56,9 @@ void imprimeMemoria(memoryRecorder *L, char mensagem[120]){
     //Aguarda 1 segundo
     //sleep(1);
 }
-
 /************************************************
  * FIM DEBUG
 ************************************************/
-
 
 
 int main(){
@@ -61,10 +76,14 @@ int main(){
     arguments *args;
     pthread_t *criador_de_processos;
     pthread_t *escalonador_FCFS;
+    pthread_t *escalonador_RR;
     pthread_t *Timer;
     pthread_t *p;
 
+    sem_init(&S, 0, 0);
+    sem_init(&S_despachante,0, 0);
 
+    printf("Início da observação\n");
     // ***********************************************
     //cria argumentos para enviar pelas threads
     args = (arguments *) malloc(sizeof(arguments));
@@ -94,26 +113,36 @@ int main(){
     */
     escalonador_FCFS = (pthread_t *) malloc(sizeof(* escalonador_FCFS));
     pthread_create(escalonador_FCFS, NULL, (void *) _fcfs, (void *) args);
-    pthread_join(*escalonador_FCFS, NULL);
+    
  
+     /**
+     * CRIA THREAD Round-Robin
+    */
+    escalonador_RR = (pthread_t *) malloc(sizeof(* escalonador_RR));
+    pthread_create(escalonador_RR, NULL, (void *) _RR, (void *) args);
+
+    pthread_join(*escalonador_FCFS, NULL);
+    pthread_join(*escalonador_RR, NULL);
+
+    printf("Término da observação\n");
 
 
 
 
-    //debug
+    //#########################
+    // debug
     
+    // //imprime fila de entrada
+    // imprimeFila(fila_entrada, "\n----------- SAIDA ------------\n---- FILA DE ENTRDA -----");
 
-    //imprime fila de entrada
-    imprimeFila(fila_entrada, "\n----------- SAIDA ------------\n---- FILA DE ENTRDA -----");
+    // //imprime fila de prontos
+    // imprimeFila(fila_prontos, "\n----------- SAIDA ------------\n---- FILA DE PRONTOS  < -----");
 
-    //imprime fila de prontos
-    imprimeFila(fila_prontos, "\n----------- SAIDA ------------\n---- FILA DE PRONTOS  < -----");
-
-    //imprime disco
-    imprimeMemoria(hardDisk, "\n----------- SAIDA ------------\n---- REGISTROS DA DISCO RÍGIDO  < -----");
+    // //imprime disco
+    // imprimeMemoria(hardDisk, "\n----------- SAIDA ------------\n---- REGISTROS DA DISCO RÍGIDO  < -----");
     
-    //imprime memória principal
-    imprimeMemoria(tmp.idProcess, "\n----------- SAIDA ------------\n---- REGISTROS DA MEMÓRIA PRINCIPAL  < -----");
+    // //imprime memória principal
+    // imprimeMemoria(tmp.idProcess, "\n----------- SAIDA ------------\n---- REGISTROS DA MEMÓRIA PRINCIPAL  < -----");
     return 0;
 
     // NÃO PODE USAR JOIN NO THREAD TIMER

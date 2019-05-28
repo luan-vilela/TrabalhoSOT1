@@ -25,14 +25,14 @@ void * _fcfs(void *node){
         // Verifica se o processo deve ser colocado
         // na fila de prontos.
         while(newProcess->tc >= getTime());
-
-
+        printf("Escalonador FCFS de longo prazo escolheu e retirou o processo id:%d da fila de entrada.\n", newProcess->id);
+        printf("Escalonador FCFS de longo prazo solicitou que Swapper traga id:%d á memória.\n", newProcess->id);
 
         // Se tiver espaço na memória aloca processo na fila de prontos
         if(_swapper(newProcess, 1)){
             // remove o processo da fila entrada
             _removeProcess(newProcess->id, filaEntrada);
-            printf("retirou:  %d da fila\n", newProcess->id);
+            
             // Desconecta dos irmãos
             newProcess = disconnectBrothers(newProcess);
             
@@ -45,10 +45,9 @@ void * _fcfs(void *node){
                 (*filaPronto)->previous = newProcess;
                 newProcess->next = *filaPronto;
                 *filaPronto = newProcess;
-            }    
-        }
-        else{
-            printf("\n*** Não tem memória suficiente para alocação do processo. ***\n");
+            }
+            printf("Escalonador FCFS de longo prazo colocou id:%d na fila de prontos.\n", newProcess->id);
+            sem_post(&S);
 
         }
         

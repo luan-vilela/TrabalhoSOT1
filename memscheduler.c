@@ -1,3 +1,13 @@
+/**
+ * Arquivo responsável por todos os métodos de auxílio
+ * aos métodos principais.
+ * 
+ *  - Contém métodos como alloca_node que é responsável na criação de novos nós
+ * da fila.
+ *  - getProcessToRR que devolve o ultimo método da fila de prontos para o escalondor RR. Assim podendo trabalhar com 
+ * TBs corretos.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "memscheduler.h"
@@ -254,7 +264,7 @@ int findProcess(int id, int local){
     }
 
     if(prox != NULL){
-        while(prox != NULL && prox->id != id){
+        while(prox->next != NULL && prox->id != id){
             prox = prox->next;
         }
 

@@ -17,12 +17,15 @@ int _swapper(process *node, int local){
     
     //verica se cabe na memória
     if(node->tp <= tmp.tmp){
+        printf("Swapper percebe que há espaço no processo id:%d na memória.\n", node->id);
         upMemory(node->tp, node->id);
+        printf("Swapper avisa Escalonador FCFS de longo prazo que o processo id:%d está na memória.\n", node->id);
         return 1;
     }
     else{
-        printf("tirando da memória principal e colocando no disco\n");
+        printf("Swapper percebe que há não espaço no processo id:%d na memória.\n", node->id);
         swapon(local);
+        printf("Swapper retirou processo id:%id para liberar espaço na memória, e enviou ao disco..\n", node->id);
     }
     return 0;
 }
@@ -53,15 +56,16 @@ int swapon(int local){
         if(local > 0){
             upMemoryDisk(prox->tp, prox->id);
             downMemory(prox->id);
+            printf("Swapper avisa Despachante que processo id:%d está no disco.\n", prox->id);
         }
         else{
             upMemory(prox->tp, prox->id);
             downMemoryDisk(prox->id);
+            printf("Swapper avisa Despachante que processo id:%d está no memória.\n", prox->id);
         }
         return 1;
     }
     else{
         return -1;
-        //printf("Não existe programa mapeado na memória!\n");
     }
 }

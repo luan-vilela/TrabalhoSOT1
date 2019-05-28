@@ -24,7 +24,7 @@ void *_createProcess(void *node){
     for(i = 0; i < ((arguments*)node)->n; i++){
         scanf("%d %d %d %d", &id, &tp, &tc, &tb);
         createNode(id,tp,tc,tb,((arguments*)node)->filaEntrada);
-        printf("%d %d %d %d\n", id, tp, tc, tb);
+        printf("Criador de processos criou o processo id:%d e colocou na fila de entrada.\n", id);
 
     }
     

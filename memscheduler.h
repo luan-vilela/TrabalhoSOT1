@@ -1,5 +1,27 @@
+/**
+ * # Membros do grupo:
+ *      - LUAN VILELA LOPES
+ *      - GIOVANNI PRATTO
+ *      - ARTHUR LEAL
+ * 
+ *  # Todos o trabalho está em arquivo separado.
+ *      - memscheduler.h é o cabeçalho e contém variáveis globais
+ *      - Trabalho-T1-SO.c contém o arquivo main()
+ *      - O restante são arquivos de métodos usados pela main
+ * 
+ * 
+ *  # Para compilar entrar na pasta do trabalho e rodar
+ *      - gcc *.c -o main -lpthread
+ *  
+ * 
+ *  # Para executar.
+ *      - ./main
+*/
+
 #ifndef _MEMSCHEDULER_H_
 #define _MEMSCHEDULER_H_
+
+#include <semaphore.h>
 
 typedef struct processId{
     int id;
@@ -37,13 +59,17 @@ memoryRecorder *hardDisk;
 struct memory tmp;
 int myTime;
 
+//declarando um semáforo
+sem_t S, S_despachante;
+
+
 /****************************************************************
  *   AQUI FICA O CABEÇALHO DE TODOS OS MÉTODOS
  ****************************************************************/
 void *_createProcess(void *node);
 void * _fcfs(void *node);
+void * _RR(void *node);
 void createNode(int id, int tp, int tc, int tb, process **node);
-void _RR(process **filaPronto);
 void _removeProcess(int id, process **fila);
 process * alloca_node();
 process * getProcess(process **fila);
@@ -58,9 +84,11 @@ void updateTime();
 void espera();
 int downMemoryDisk(int id);
 void upMemoryDisk(int tp, int id);
+int downMemoryDisk(int id);
 int swapon(int local);
 int findProcess(int id, int local);
 process * getProcessToRR(process **fila);
+void _despachante(process *fila);
 
 /****************************************************************
  *   MÉTODOS QUE PRECISÃO SER IMPLEMENTADOS
@@ -74,8 +102,6 @@ process * getProcessToRR(process **fila);
  ****************************************************************/
 
 void _timered();
-void _despachante();
-int donwMemoryDisk();
 
 
 
